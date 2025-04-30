@@ -94,7 +94,7 @@ workflows:
   build_test_deploy:
     jobs:
       - lint
-      - build
+      - build:
           override-with: overrides/custom-build
       - deploy:
           context: z00b-basics
