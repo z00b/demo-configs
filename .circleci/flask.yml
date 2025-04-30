@@ -101,7 +101,6 @@ workflows:
           requires:
             - lint
             - build
-            - boring
           filters:
             branches:
               only: main
