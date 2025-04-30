@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  overrides: https://raw.githubusercontent.com/<< pipeine.git.repo_owner >>/<< pipeline.git.repo_name >>/main/.circleci/overrides.yml
+  overrides: https://raw.githubusercontent.com/<< pipeline.git.repo_owner >>/<< pipeline.git.repo_name >>/main/.circleci/overrides.yml
   gcp-cli: circleci/gcp-cli@3.0.1
 
 jobs:
