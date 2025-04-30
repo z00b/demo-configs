@@ -25,7 +25,7 @@ jobs:
           name: pylint
           command: |
             . venv/bin/activate
-            pylint --output-format=colorized hello
+            pylint --output-format=colorized src
 
   build:
     docker:
@@ -86,17 +86,17 @@ jobs:
       - gcp-oidc-authenticate
       - run:
           name: Build Image
-          command: docker build -t hello:${CIRCLE_SHA1} .
+          command: docker build -t << pipeline.git.repo_name >>:${CIRCLE_SHA1} .
       - run:
           name: Push to Artifact Registry
           command: |
-            docker tag hello:${CIRCLE_SHA1} us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/hello:${CIRCLE_SHA1}
-            docker push us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/hello:${CIRCLE_SHA1}
+            docker tag << pipeline.git.repo_name >>:${CIRCLE_SHA1} us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/<< pipeline.git.repo_name >>:${CIRCLE_SHA1}
+            docker push us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/<< pipeline.git.repo_name >>:${CIRCLE_SHA1}
       - run:
           name: Deploy to Cloud Run
           command: |
-            gcloud run deploy hello \
-              --image us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/hello:${CIRCLE_SHA1} \
+            gcloud run deploy << pipeline.git.repo_name >> \
+              --image us-central1-docker.pkg.dev/hip-girder-222116/demo-repository/<< pipeline.git.repo_name >>:${CIRCLE_SHA1} \
               --region=us-central1 --project=hip-girder-222116 --allow-unauthenticated
 
 workflows:
@@ -111,6 +111,7 @@ workflows:
           requires:
             - lint
             - build
+            - boring
           filters:
             branches:
               only: main
@@ -163,8 +164,3 @@ commands:
             # Configure ADC
             echo "export GOOGLE_APPLICATION_CREDENTIALS='<< parameters.gcp_cred_config_file_path >>'" | tee -a "$BASH_ENV"
             gcloud auth configure-docker us-central1-docker.pkg.dev
-
-
-
-
-# VS Code Extension Version: 1.1.1
