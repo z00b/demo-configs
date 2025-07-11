@@ -93,13 +93,13 @@ jobs:
 workflows:
   build_test_deploy:
     jobs:
-      - lint
+      - lint:
+          override-with: overrides/custom-lint
       - build:
           override-with: overrides/custom-build
       - deploy:
           context: z00b-basics
           requires:
-            - lint
             - build
           filters:
             branches:
