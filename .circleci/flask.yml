@@ -21,7 +21,6 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
-            pip freeze | grep -v -f requirements.txt - | grep -v '^#' | xargs pip uninstall -y
       - run:
           name: pylint
           command: |
@@ -50,6 +49,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            pip freeze | grep -v -f requirements.txt - | grep -v '^#' | xargs pip uninstall -y
 
       - save_cache:
           paths:
